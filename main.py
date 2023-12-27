@@ -32,7 +32,7 @@ async def job():
     birthday1 = birthday[birthday['Дата рождения'] == str(datetime.today().strftime('%d.%m.%Y'))].reset_index(drop=True)
     # print(birthday1)
     # print(len(birthday1))
-    date = str(birthday1['Дата рождения'][0])[0:10] + ' 17:15'
+    date = str(birthday1['Дата рождения'][0])[0:10] + ' 10:00'
     formatted_date = datetime.strptime(date, "%Y-%m-%d %H:%M")
     if str(datetime.today().strftime('%Y-%m-%d %H:%M:%S')) == str(formatted_date):
         for i in range(0, len(birthday1)):
