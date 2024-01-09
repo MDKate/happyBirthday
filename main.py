@@ -28,22 +28,45 @@ async def on_startup(_):
 async def job():
     birthday = pd.read_excel(os.path.abspath('УИДР.xlsx'))
     gratters = pd.read_excel(os.path.abspath('Поздравления.xlsx'))
-    # print('aaaaaaaaaaa')
-    birthday1 = birthday[birthday['Дата рождения'] == str(datetime.today().strftime('%d.%m.%Y'))].reset_index(drop=True)
+    # print(str((birthday['Дата рождения'][79]).strftime('%d.%m'))[0:5])
+    # print(str((birthday['Дата рождения'][79]).strftime('%d.%m'))[0:5] == str(datetime.today().strftime('%d.%m'))[0:5])
+    birthday1 = pd.DataFrame(columns=birthday.columns)
+    for i in range(len(birthday)):
+        # print(datetime.strftime(birthday['Дата рождения'][i], '%d.%m'), str(datetime.today().strftime('%d.%m'))[0:5])
+        if datetime.strftime(birthday['Дата рождения'][i], '%d.%m') == str(datetime.today().strftime('%d.%m'))[0:5]:
+            # print(birthday.iloc[i].values)
+            birthday1.loc[len(birthday1.index)] = birthday.iloc[i]
+
+
+    date = str(datetime.today().strftime("%Y-%m-%d")) + '5:00'
     # print(birthday1)
-    # print(len(birthday1))
-    date = str(birthday1['Дата рождения'][0])[0:10] + ' 10:00'
     formatted_date = datetime.strptime(date, "%Y-%m-%d %H:%M")
     if str(datetime.today().strftime('%Y-%m-%d %H:%M:%S')) == str(formatted_date):
-        for i in range(0, len(birthday1)):
-            NamePerson = birthday1['Имя'][i] + ' ' + birthday1['Отчество'][i]
+        for x in range(0, len(birthday1)):
+            # print(str(birthday1.values[0]))
+            NamePerson = str(birthday1.iloc[x].values[1]) + ' ' + str(birthday1.iloc[x].values[2])
             generateText = gratters.sample()['Текст']
             generateText = generateText.values[0]
-            # print(str(datetime.today().strftime('%Y-%m-%d %H:%M:%S')), str(formatted_date))
-            # print('**********')
             await botMes.send_message(open(os.path.abspath('chat.txt')).read(), 'Всем доброго дня! \n'
                                                                                 f'Сегодня наш именинник {NamePerson} \n'
                                                                                 f'{generateText}')
+
+
+
+    # print(birthday1)
+    # birthday1 = birthday[birthday['Дата рождения'] == str(datetime.today().strftime('%d.%m.%Y'))].reset_index(drop=True)
+    # # print(birthday1)
+    # # print(str(birthday1['Дата рождения']))
+    # date = str(birthday1['Дата рождения'][0])[0:10] + ' 11:27'
+    # formatted_date = datetime.strptime(date, "%Y-%m-%d %H:%M")
+    # if str(datetime.today().strftime('%Y-%m-%d %H:%M:%S')) == str(formatted_date):
+    #     for i in range(0, len(birthday1)):
+    #         NamePerson = birthday1['Имя'][i] + ' ' + birthday1['Отчество'][i]
+    #         generateText = gratters.sample()['Текст']
+    #         generateText = generateText.values[0]
+    #         await botMes.send_message(open(os.path.abspath('chat.txt')).read(), 'Всем доброго дня! \n'
+    #                                                                             f'Сегодня наш именинник {NamePerson} \n'
+    #                                                                             f'{generateText}')
 
 @bot.message_handler(commands=['update_table'])  # обновить в базе таблицу vks
 async def start(message: types.message):
