@@ -38,7 +38,7 @@ async def job():
             birthday1.loc[len(birthday1.index)] = birthday.iloc[i]
 
 
-    date = str(datetime.today().strftime("%Y-%m-%d")) + '5:00'
+    date = str(datetime.today().strftime("%Y-%m-%d")) + ' 3:00' #' 5:00'
     # print(birthday1)
     formatted_date = datetime.strptime(date, "%Y-%m-%d %H:%M")
     if str(datetime.today().strftime('%Y-%m-%d %H:%M:%S')) == str(formatted_date):
@@ -47,7 +47,8 @@ async def job():
             NamePerson = str(birthday1.iloc[x].values[1]) + ' ' + str(birthday1.iloc[x].values[2])
             generateText = gratters.sample()['Текст']
             generateText = generateText.values[0]
-            await botMes.send_message(open(os.path.abspath('chat.txt')).read(), 'Всем доброго дня! \n'
+            await botMes.send_message(chat_id=open(os.path.abspath('chat.txt')).read(), message_thread_id=open(os.path.abspath('thread.txt')).read(),
+                                                                                text='Всем доброго дня! \n'
                                                                                 f'Сегодня наш именинник {NamePerson} \n'
                                                                                 f'{generateText}')
 
